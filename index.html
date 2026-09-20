@@ -102,6 +102,31 @@
   .section-head{ display:flex; align-items:baseline; gap: 14px; margin-bottom: 26px; }
   h2{ font-family: var(--serif); font-weight:600; font-size: 1.5rem; margin: 0; }
 
+  /* ---------- Figures (shared) ---------- */
+  figure{ margin: 0; }
+  figure img{
+    display: block; width: 100%;
+    aspect-ratio: 4 / 3; object-fit: cover;
+    border: 1px solid var(--line); border-radius: 4px;
+    background: var(--bg-panel);
+  }
+  figure.portrait img{ aspect-ratio: 3 / 4; }
+  figcaption{
+    margin-top: 7px;
+    font-family: var(--mono); font-size: 0.74rem; line-height: 1.45;
+    color: var(--ink-dim);
+  }
+  .fig-row{
+    display: grid; gap: 16px;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    margin: 22px 0 26px;
+  }
+  .fig-row.compact{ max-width: 580px; margin: 16px 0 6px; }
+
+  /* ---------- About: dance photo below the volunteering/dance paragraph ---------- */
+  .about-photo{ max-width: 260px; margin: 22px auto 0; }
+.about-photo figcaption{ text-align: center; }
+
   /* ---------- Research experience ---------- */
   .timeline{ position:relative; }
   .t-item{ padding: 20px 0; border-bottom: 1px dotted var(--line); }
@@ -111,11 +136,16 @@
   .t-title{ font-family: var(--serif); font-weight:600; font-size: 1.12rem; margin: 0 0 2px; }
   .t-meta{ font-size: 0.88rem; color: var(--ink-dim); }
   .t-guide{ font-size: 0.88rem; color: var(--ink-dim); font-style: italic; margin-bottom: 10px; }
-  .t-item ul{ margin: 0; padding-left: 18px; }
-  .t-item li{ margin-bottom: 5px; font-size: 0.95rem; }
+  .t-item .sec-text, .proj .sec-text{ margin: 0; }
+
+  /* text on the left, one figure on the right */
+  .entry-body{
+    display: grid; grid-template-columns: minmax(0, 1fr) 250px;
+    gap: 26px; align-items: start;
+  }
 
   /* ---------- Report / poster links ---------- */
-  .tags{ margin-top: 10px; display:flex; gap:10px; flex-wrap:wrap; }
+  .tags{ margin-top: 12px; display:flex; gap:10px; flex-wrap:wrap; }
   .tag{
     font-family: var(--mono); font-size: 0.74rem; color: var(--ink-dim);
     border: 1px dashed var(--line); border-radius: 3px; padding: 3px 8px;
@@ -140,11 +170,18 @@
   .proj-title{ font-weight:600; }
   .proj-date{ font-family: var(--mono); font-size: 0.8rem; color: var(--ink-dim); white-space:nowrap; }
   .proj-context{ font-style:italic; color: var(--ink-dim); font-size: 0.9rem; margin: 2px 0 8px; }
-  .proj ul{ margin: 0; padding-left: 18px; }
-  .proj li{ margin-bottom: 5px; font-size: 0.95rem; }
 
   /* ---------- Contact ---------- */
   #contact{ padding-bottom: 90px; }
+
+  /* ---------- Small screens ---------- */
+  @media (max-width: 640px){
+    .entry-body{ grid-template-columns: minmax(0, 1fr); }
+    .entry-body figure{ max-width: 320px; }
+  }
+  @media (max-width: 460px){
+    .fig-row{ grid-template-columns: minmax(0, 1fr); }
+  }
 </style>
 </head>
 <body>
@@ -201,7 +238,24 @@
 
     <p class="sec-text">My growing interest in <strong>computational fluid dynamics</strong> led me to pursue coursework in CFD through the Advanced level, where I developed a 3-D high-order compressible flow solver in Fortran, first for DNS and subsequently extending it to RANS with the k–ω and novel k–ω<sub>0</sub> turbulence models; the latter demonstrated improved numerical stability and accuracy on coarser grids.</p>
 
+    <!-- Research figures: TGV (DNS) and BOS -->
+    <div class="fig-row">
+      <figure>
+        <img src="about-tgv.png" alt="Vortex structures from a Taylor–Green vortex DNS" loading="lazy">
+        <figcaption>Taylor–Green vortex simulation</figcaption>
+      </figure>
+      <figure>
+        <img src="about-bos.png" alt="Background-Oriented Schlieren result for an axisymmetric flow" loading="lazy">
+        <figcaption>Background-Oriented Schlieren</figcaption>
+      </figure>
+    </div>
+
     <p class="sec-text">Beyond academics and research, I have a strong interest in <strong>volunteering and mentoring</strong>. I joined Avanti Fellows, IIT Madras as a mentor in my freshman year, working with the student team to support underprivileged students in their preparation for college entrance examinations. I later served as the <strong>head of this 40+ member team</strong>. Under my guidance, 30+ students from underprivileged backgrounds gained admission to top engineering colleges across India. I am also a <strong>classical dancer</strong>, with over 10 years of training in Bharatanatyam.</p>
+
+    <figure class="portrait about-photo">
+      <img src="about-dance.jpg" alt="Purna performing Bharatanatyam" loading="lazy">
+      <figcaption>Bharatanatyam</figcaption>
+    </figure>
   </section>
 
 
@@ -215,12 +269,19 @@
         <div class="t-title">Unsteadiness in Crossing Shockwave Boundary Layer Interaction</div>
         <div class="t-meta">Master's Thesis · Gas Dynamics Laboratory, IIT Madras</div>
         <div class="t-guide">Guide: Prof. R. Sriram</div>
-        <ul>
-          <li>Investigating the governing mechanisms of unsteadiness in the 3-D crossing shock wave boundary layer interactions.</li>
-          <li>Exploring the possibility of hysteresis being associated with the transition from regular reflection to Mach reflection.</li>
-          <li>Employing Schlieren and oil-flow visualization &amp; unsteady pressure measurements, in a supersonic wind tunnel facility.</li>
-          <li>Implemented Background-Oriented Schlieren (BOS) for an axisymmetric case and are extending it to tomographic-BOS.</li>
-        </ul>
+        <div class="entry-body">
+          <p class="sec-text">My master's thesis asks what drives unsteadiness in three-dimensional crossing shock wave–boundary layer interactions, and whether the transition from regular to Mach reflection in this configuration is accompanied by hysteresis. I am tackling this in a supersonic wind tunnel with schlieren and oil-flow visualisation alongside unsteady pressure measurements. I have also implemented Background-Oriented Schlieren (BOS) for an axisymmetric case and am now extending it to tomographic BOS to capture the three-dimensional structure of the flow.</p>
+          <div class="fig-row compact">
+           <figure>
+              <img src="about-bos.png" alt="Background-Oriented Schlieren result for an axisymmetric flow" loading="lazy">
+              <figcaption>BOS: Density Gradients</figcaption>
+          </figure>
+          <figure>
+            <img src="thesis-bos.png" alt="Background-Oriented Schlieren result from the thesis experiments" loading="lazy">
+            <figcaption>BOS: Density Reconstruction</figcaption>
+          </figure>
+        </div>
+        </div>
         <div class="tags">
           <a class="tag filled" href="ae22b003_ddp_review1.pptx.pdf" target="_blank" rel="noopener">Review 1</a>
         </div>
@@ -231,14 +292,7 @@
         <div class="t-title">Interaction of Moving Expansion Waves via Method of Characteristics</div>
         <div class="t-meta">Undergraduate Research · Gas Dynamics Laboratory, IIT Madras</div>
         <div class="t-guide">Guide: Prof. R. Sriram</div>
-        <ul>
-          <li>Applied the method of characteristics to develop a 1-D theoretical framework to solve expansion wave interactions.</li>
-          <li>The developed solver produced physically reasonable results for head-on interactions of two moving expansion fans.</li>
-          <li>Currently validating the results against an in-house compressible flow solver, to establish the framework's accuracy.</li>
-        </ul>
-        <div class="tags">
-          <a class="tag filled" href="AE22B003_AS4545_Report%20(1).pdf" target="_blank" rel="noopener">Report</a>
-        </div>
+        <p class="sec-text">I developed a one-dimensional theoretical framework, built on the method of characteristics, for the interaction of moving expansion waves. The solver gives physically reasonable results for head-on interactions of two expansion fans, and I am validating it against an in-house compressible flow solver to establish its accuracy. This work has been accepted for oral presentation at the 26th International Shock Interaction Symposium (ISIS 2026) in Daegu, South Korea.</p>
       </div>
 
       <div class="t-item">
@@ -246,12 +300,17 @@
         <div class="t-title">Reduced Order Modelling of Acoustic Response of a Combustor</div>
         <div class="t-meta">Research Internship · Thermal Physics Laboratory, Kyoto University</div>
         <div class="t-guide">Guide: Prof. Kurose Ryoichi</div>
-        <ul>
-          <li>Selected for Kyoto University's Short Term Academic Research Program; presented a poster on the results obtained.</li>
-          <li>Investigated the acoustic response and eigenfrequencies of a simplified combustor model using COMSOL Multiphysics.</li>
-          <li>Developed a reduced-order model via a Green's function approach to determine pressure distributions using eigenmodes.</li>
-          <li>Successfully validated the developed model against simulation data, predicting pressure distribution at any frequency.</li>
-        </ul>
+        <p class="sec-text">I was selected for Kyoto University's highly competitive Short Term Academic Research Program, where I studied the acoustic response of a simplified combustor. After computing its eigenfrequencies and response in COMSOL Multiphysics, I built a reduced-order model using a Green's function approach that reconstructs the pressure distribution from the eigenmodes. The model was validated against simulation data and predicts the pressure distribution at any frequency. I presented the results as a poster at the end of the program.</p>
+        <div class="fig-row compact">
+          <figure>
+            <img src="kyoto-comsol.png" alt="Pressure distribution obtained from the COMSOL simulation" loading="lazy">
+            <figcaption>Pressure distribution from COMSOL</figcaption>
+          </figure>
+          <figure>
+            <img src="kyoto-rom.png" alt="Pressure distribution reconstructed with the Green's-function reduced-order model" loading="lazy">
+            <figcaption>Pressure distribution the ROM</figcaption>
+          </figure>
+        </div>
         <div class="tags">
           <a class="tag filled" href="Purna Ananthkrishnan¹ , Abhishek L. Pillai², Ryoichi Kurose² ¹Indian Institute of Technology, Madras, India, ²Department of Mechanical Engineering and Science, Kyoto University, Japan_.pdf" target="_blank" rel="noopener">Poster</a>
         </div>
@@ -262,11 +321,7 @@
         <div class="t-title">Shock–Cavity Shear Layer Interaction with Gas Injection</div>
         <div class="t-meta">Undergraduate Research · Gas Dynamics Laboratory, IIT Madras</div>
         <div class="t-guide">Guide: Prof. R. Sriram</div>
-        <ul>
-          <li>Conducted experiments to study shock-cavity shear layer interaction over a tapered cavity, with passive air-jet injection.</li>
-          <li>Performed proper orthogonal decomposition of Schlieren images and power spectral density analysis of pressure data.</li>
-          <li>Observed an absence of Rossiter modes, indicating suppression of the acoustic feedback loop and resonant behaviour.</li>
-        </ul>
+        <p class="sec-text">I ran experiments on the shock–cavity shear layer interaction over a tapered cavity with passive air-jet injection. Proper orthogonal decomposition of the schlieren images and power spectral density analysis of the pressure data showed no Rossiter modes, indicating that the acoustic feedback loop and resonant behaviour were suppressed. The work was published in the proceedings of ISSW35.</p>
       </div>
 
       <div class="t-item">
@@ -274,10 +329,7 @@
         <div class="t-title">Modelling of the Lifted Temperature Minimum Phenomenon</div>
         <div class="t-meta">Research Internship · Fluid Mechanics Laboratory, JNCASR</div>
         <div class="t-guide">Guide: Prof. K.R. Sreenivas</div>
-        <ul>
-          <li>Awarded the summer research fellowship by Jawaharlal Nehru Institute for Advanced Scientific Research (JNCASR).</li>
-          <li>Modelled nocturnal boundary layer temperature profiles with aerosol heat transfer, demonstrating a lifted temperature minimum.</li>
-        </ul>
+        <p class="sec-text">As a summer research fellow at JNCASR, I modelled temperature profiles in the nocturnal boundary layer with aerosol heat transfer included, and showed that the model reproduces a lifted temperature minimum.</p>
         <div class="tags">
           <a class="tag filled" href="SRFP_Report_Final.pdf" target="_blank" rel="noopener">Report</a>
         </div>
@@ -312,12 +364,17 @@
         <span class="proj-date">Jan 2026 — May 2026</span>
       </div>
       <div class="proj-context">Course Project, Advanced Computational Fluid Dynamics</div>
-      <ul>
-        <li>Developed a 3-D compressible flow solver in Fortran90, with high-order compact &amp; explicit finite-difference schemes</li>
-        <li>Validated the DNS solver against canonical benchmarks cases – Taylor-Green Vortex and inviscid vortex convection</li>
-        <li>Incorporated RANS with k–ω and the novel k–ω<sub>0</sub> turbulence model to simulate the viscous flow over a flat-plate.</li>
-        <li>Demonstrated significant improvement in numerical stability, better accuracy on coarser grids for the k–ω<sub>0</sub> model.</li>
-      </ul>
+      <p class="sec-text">I wrote a 3-D compressible flow solver in Fortran90 using high-order compact and explicit finite-difference schemes, and validated the DNS against two canonical benchmarks, the Taylor–Green vortex and inviscid vortex convection. I then added RANS with the k–ω model and a novel k–ω<sub>0</sub> model to simulate viscous flow over a flat plate, where k–ω<sub>0</sub> showed markedly better numerical stability and better accuracy on coarser grids.</p>
+      <div class="fig-row compact">
+        <figure>
+          <img src="acfd-sim-1.png" alt="Taylor–Green vortex DNS validation result" loading="lazy">
+          <figcaption>DNS: Taylor–Green vortex</figcaption>
+        </figure>
+        <figure>
+          <img src="acfd-sim-2.png" alt="u+ versus log y+ profiles for the RANS flat-plate boundary layer" loading="lazy">
+          <figcaption>RANS: u<sup>+</sup> vs log y<sup>+</sup> profiles</figcaption>
+        </figure>
+      </div>
       <div class="tags">
         <a class="tag filled" href="AS6041_Assignment1%20(1)_compressed.pdf" target="_blank" rel="noopener">Report 1</a>
         <a class="tag filled" href="Enhancement11_KW0_AE22B003_AE25M015_Report.pdf" target="_blank" rel="noopener">Report 2</a>
@@ -330,11 +387,17 @@
         <span class="proj-date">Jul 2025 — Nov 2025</span>
       </div>
       <div class="proj-context">Course Project, Computational Aerodynamics</div>
-      <ul>
-        <li>Developed an explicit finite-volume incompressible Euler solver using the artificial compressibility method in MATLAB</li>
-        <li>Extended the solver to compressible flow, implementing Roe, Van Leer, and AUSM schemes for interface flux evaluation</li>
-        <li>Simulated the flow over a bump and verified the accuracy of the solver across a range of Mach numbers from 0.4-1.4</li>
-      </ul>
+      <p class="sec-text">I built an explicit finite-volume incompressible Euler solver in MATLAB using the artificial compressibility method, then extended it to compressible flow with Roe, Van Leer, and AUSM schemes for the interface fluxes. I simulated flow over a bump and verified the solver's accuracy across Mach numbers from 0.4 to 1.4.</p>
+      <div class="fig-row compact">
+        <figure>
+          <img src="compaero-sim-1.png" alt="Incompressible flow over a bump" loading="lazy">
+          <figcaption>Incompressible flow over a bump: u<sub>&infin;</sub> = 20 m/s</figcaption>
+        </figure>
+        <figure>
+          <img src="compaero-sim-2.png" alt="Compressible flow over a bump" loading="lazy">
+          <figcaption>Compressible flow over a bump: M<sub>&infin;</sub> = 0.8</figcaption>
+        </figure>
+      </div>
       <div class="tags">
         <a class="tag filled" href="AS5330_Group_03_Project_1.pdf" target="_blank" rel="noopener">Report 1</a>
         <a class="tag filled" href="AS5330_Group_03_Project_2.pdf" target="_blank" rel="noopener">Report 2</a>
@@ -347,11 +410,13 @@
         <span class="proj-date">Jul 2025 — Nov 2025</span>
       </div>
       <div class="proj-context">Course Project, Design and Fabrication of UAV/MAVs</div>
-      <ul>
-        <li>Designed and fabricated a fixed-wing UAV with a 2 m wingspan and 8 kg MTOW for long-range maritime surveillance</li>
-        <li>Performed a thorough aerodynamic, structural, and stability analysis to validate the design for the mission requirements.</li>
-        <li>Fabricated the UAV airframe with all structural elements, primarily using aluminium sheets and 3-D printed components</li>
-      </ul>
+      <div class="entry-body">
+        <p class="sec-text">I designed and fabricated a fixed-wing UAV with a 2 m wingspan and 8 kg MTOW for long-range maritime surveillance. Aerodynamic, structural, and stability analyses validated the design against the mission requirements, and the airframe was built primarily from aluminium sheets and 3-D printed components.</p>
+        <figure>
+          <img src="uav-built.jpg" alt="The fabricated fixed-wing UAV" loading="lazy">
+          <figcaption>The fabricated UAV</figcaption>
+        </figure>
+      </div>
     </div>
 
     <div class="proj">
@@ -360,10 +425,7 @@
         <span class="proj-date">Jan 2025 — May 2025</span>
       </div>
       <div class="proj-context">Course Project, Nonlinear Dynamics</div>
-      <ul>
-        <li>Modelled the coupled structure-wake oscillator system from Facchinetti et al. (2004) to study vortex-induced vibrations.</li>
-        <li>Validated the model's predictions of hysteretic behaviour and extended the model to incorporate nonlinear coupling.</li>
-      </ul>
+      <p class="sec-text">I modelled the coupled structure–wake oscillator system of Facchinetti et al. (2004) to study vortex-induced vibrations, validated its predictions of hysteretic behaviour, and extended it with nonlinear coupling.</p>
       <div class="tags">
         <a class="tag filled" href="AE22B003_AM5650_CourseProject.pdf" target="_blank" rel="noopener">Report</a>
       </div>
