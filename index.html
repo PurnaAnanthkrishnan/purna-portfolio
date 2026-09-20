@@ -102,30 +102,40 @@
   .section-head{ display:flex; align-items:baseline; gap: 14px; margin-bottom: 26px; }
   h2{ font-family: var(--serif); font-weight:600; font-size: 1.5rem; margin: 0; }
 
-  /* ---------- Figures (shared) ---------- */
+  /* ---------- Figures ----------
+     Every figure uses the same 4:3 frame. Plots are shown whole (never cropped)
+     on a white mat, so plots with white or transparent backgrounds sit cleanly in it. */
   figure{ margin: 0; }
   figure img{
     display: block; width: 100%;
-    aspect-ratio: 4 / 3; object-fit: cover;
+    aspect-ratio: 4 / 3;
+    object-fit: contain;          /* fit the whole image inside the frame */
+    padding: 6px;                 /* thin white mat around the plot */
+    background: #fff;             /* white behind every plot, incl. transparent PNGs */
     border: 1px solid var(--line); border-radius: 4px;
-    background: var(--bg-panel);
   }
-  figure.portrait img{ aspect-ratio: 3 / 4; }
+  /* photographs: same frame, whole photo visible, dark panel behind it */
+  figure.photo img{ padding: 0; background: var(--bg-panel); }
+  /* portrait photo (dance): crops to fill a 3:4 frame */
+  figure.portrait img{ aspect-ratio: 3 / 4; object-fit: cover; padding: 0; background: var(--bg-panel); }
+
   figcaption{
-    margin-top: 7px;
+    margin-top: 8px; text-align: center;
     font-family: var(--mono); font-size: 0.74rem; line-height: 1.45;
     color: var(--ink-dim);
   }
+
+  /* two frames side by side, spanning the full text width */
   .fig-row{
     display: grid; gap: 16px;
     grid-template-columns: repeat(2, minmax(0, 1fr));
-    margin: 22px 0 26px;
+    margin: 20px 0 22px;
   }
-  .fig-row.compact{ max-width: 580px; margin: 16px 0 6px; }
+  /* one frame, centred, same width as one frame of a pair */
+  .fig-single{ max-width: calc((100% - 16px) / 2); margin: 20px auto 0; }
 
-  /* ---------- About: dance photo below the volunteering/dance paragraph ---------- */
+  /* dance photo below the volunteering/dance paragraph */
   .about-photo{ max-width: 260px; margin: 22px auto 0; }
-.about-photo figcaption{ text-align: center; }
 
   /* ---------- Research experience ---------- */
   .timeline{ position:relative; }
@@ -137,12 +147,6 @@
   .t-meta{ font-size: 0.88rem; color: var(--ink-dim); }
   .t-guide{ font-size: 0.88rem; color: var(--ink-dim); font-style: italic; margin-bottom: 10px; }
   .t-item .sec-text, .proj .sec-text{ margin: 0; }
-
-  /* text on the left, one figure on the right */
-  .entry-body{
-    display: grid; grid-template-columns: minmax(0, 1fr) 250px;
-    gap: 26px; align-items: start;
-  }
 
   /* ---------- Report / poster links ---------- */
   .tags{ margin-top: 12px; display:flex; gap:10px; flex-wrap:wrap; }
@@ -175,12 +179,9 @@
   #contact{ padding-bottom: 90px; }
 
   /* ---------- Small screens ---------- */
-  @media (max-width: 640px){
-    .entry-body{ grid-template-columns: minmax(0, 1fr); }
-    .entry-body figure{ max-width: 320px; }
-  }
   @media (max-width: 460px){
     .fig-row{ grid-template-columns: minmax(0, 1fr); }
+    .fig-single{ max-width: 100%; }
   }
 </style>
 </head>
@@ -245,7 +246,7 @@
         <figcaption>Taylor–Green vortex simulation</figcaption>
       </figure>
       <figure>
-        <img src="about-bos.png" alt="Background-Oriented Schlieren result for an axisymmetric flow" loading="lazy">
+        <img src="thesis-bos.png" alt="Background-Oriented Schlieren density gradient field" loading="lazy">
         <figcaption>Background-Oriented Schlieren</figcaption>
       </figure>
     </div>
@@ -269,18 +270,16 @@
         <div class="t-title">Unsteadiness in Crossing Shockwave Boundary Layer Interaction</div>
         <div class="t-meta">Master's Thesis · Gas Dynamics Laboratory, IIT Madras</div>
         <div class="t-guide">Guide: Prof. R. Sriram</div>
-        <div class="entry-body">
-          <p class="sec-text">My master's thesis asks what drives unsteadiness in three-dimensional crossing shock wave–boundary layer interactions, and whether the transition from regular to Mach reflection in this configuration is accompanied by hysteresis. I am tackling this in a supersonic wind tunnel with schlieren and oil-flow visualisation alongside unsteady pressure measurements. I have also implemented Background-Oriented Schlieren (BOS) for an axisymmetric case and am now extending it to tomographic BOS to capture the three-dimensional structure of the flow.</p>
-          <div class="fig-row compact">
-           <figure>
-              <img src="about-bos.png" alt="Background-Oriented Schlieren result for an axisymmetric flow" loading="lazy">
-              <figcaption>BOS: Density Gradients</figcaption>
+        <p class="sec-text">My master's thesis asks what drives unsteadiness in three-dimensional crossing shock wave–boundary layer interactions, and whether the transition from regular to Mach reflection in this configuration is accompanied by hysteresis. I am tackling this in a supersonic wind tunnel with schlieren and oil-flow visualisation alongside unsteady pressure measurements. I have also implemented Background-Oriented Schlieren (BOS) for an axisymmetric case and am now extending it to tomographic BOS to capture the three-dimensional structure of the flow.</p>
+        <div class="fig-row">
+          <figure>
+            <img src="thesis-gradient.png" alt="Background-Oriented Schlieren density gradient field" loading="lazy">
+            <figcaption>BOS: Density Gradients</figcaption>
           </figure>
           <figure>
-            <img src="thesis-bos.png" alt="Background-Oriented Schlieren result from the thesis experiments" loading="lazy">
+            <img src="about-bos.png" alt="Density field reconstructed from Background-Oriented Schlieren" loading="lazy">
             <figcaption>BOS: Density Reconstruction</figcaption>
           </figure>
-        </div>
         </div>
         <div class="tags">
           <a class="tag filled" href="ae22b003_ddp_review1.pptx.pdf" target="_blank" rel="noopener">Review 1</a>
@@ -301,14 +300,14 @@
         <div class="t-meta">Research Internship · Thermal Physics Laboratory, Kyoto University</div>
         <div class="t-guide">Guide: Prof. Kurose Ryoichi</div>
         <p class="sec-text">I was selected for Kyoto University's highly competitive Short Term Academic Research Program, where I studied the acoustic response of a simplified combustor. After computing its eigenfrequencies and response in COMSOL Multiphysics, I built a reduced-order model using a Green's function approach that reconstructs the pressure distribution from the eigenmodes. The model was validated against simulation data and predicts the pressure distribution at any frequency. I presented the results as a poster at the end of the program.</p>
-        <div class="fig-row compact">
+        <div class="fig-row">
           <figure>
             <img src="kyoto-comsol.png" alt="Pressure distribution obtained from the COMSOL simulation" loading="lazy">
             <figcaption>Pressure distribution from COMSOL</figcaption>
           </figure>
           <figure>
             <img src="kyoto-rom.png" alt="Pressure distribution reconstructed with the Green's-function reduced-order model" loading="lazy">
-            <figcaption>Pressure distribution the ROM</figcaption>
+            <figcaption>Pressure distribution from the ROM</figcaption>
           </figure>
         </div>
         <div class="tags">
@@ -365,7 +364,7 @@
       </div>
       <div class="proj-context">Course Project, Advanced Computational Fluid Dynamics</div>
       <p class="sec-text">I wrote a 3-D compressible flow solver in Fortran90 using high-order compact and explicit finite-difference schemes, and validated the DNS against two canonical benchmarks, the Taylor–Green vortex and inviscid vortex convection. I then added RANS with the k–ω model and a novel k–ω<sub>0</sub> model to simulate viscous flow over a flat plate, where k–ω<sub>0</sub> showed markedly better numerical stability and better accuracy on coarser grids.</p>
-      <div class="fig-row compact">
+      <div class="fig-row">
         <figure>
           <img src="acfd-sim-1.png" alt="Taylor–Green vortex DNS validation result" loading="lazy">
           <figcaption>DNS: Taylor–Green vortex</figcaption>
@@ -388,7 +387,7 @@
       </div>
       <div class="proj-context">Course Project, Computational Aerodynamics</div>
       <p class="sec-text">I built an explicit finite-volume incompressible Euler solver in MATLAB using the artificial compressibility method, then extended it to compressible flow with Roe, Van Leer, and AUSM schemes for the interface fluxes. I simulated flow over a bump and verified the solver's accuracy across Mach numbers from 0.4 to 1.4.</p>
-      <div class="fig-row compact">
+      <div class="fig-row">
         <figure>
           <img src="compaero-sim-1.png" alt="Incompressible flow over a bump" loading="lazy">
           <figcaption>Incompressible flow over a bump: u<sub>&infin;</sub> = 20 m/s</figcaption>
@@ -410,13 +409,11 @@
         <span class="proj-date">Jul 2025 — Nov 2025</span>
       </div>
       <div class="proj-context">Course Project, Design and Fabrication of UAV/MAVs</div>
-      <div class="entry-body">
-        <p class="sec-text">I designed and fabricated a fixed-wing UAV with a 2 m wingspan and 8 kg MTOW for long-range maritime surveillance. Aerodynamic, structural, and stability analyses validated the design against the mission requirements, and the airframe was built primarily from aluminium sheets and 3-D printed components.</p>
-        <figure>
-          <img src="uav-built.jpg" alt="The fabricated fixed-wing UAV" loading="lazy">
-          <figcaption>The fabricated UAV</figcaption>
-        </figure>
-      </div>
+      <p class="sec-text">I designed and fabricated a fixed-wing UAV with a 2 m wingspan and 8 kg MTOW for long-range maritime surveillance. Aerodynamic, structural, and stability analyses validated the design against the mission requirements, and the airframe was built primarily from aluminium sheets and 3-D printed components.</p>
+      <figure class="photo fig-single">
+        <img src="uav-built.png" alt="The fabricated fixed-wing UAV" loading="lazy">
+        <figcaption>The fabricated UAV</figcaption>
+      </figure>
     </div>
 
     <div class="proj">
